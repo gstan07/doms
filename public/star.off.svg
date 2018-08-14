@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" data-name="S_StarOutline_24_N@1x" height="24" id="S_StarOutline_24_N_1x" viewBox="0 0 24 24" width="24">
+  <defs>
+    <style>
+	.fill {
+        fill: #707070;
+      }</style>
+  </defs>
+  <title>S_StarOutline_24_N@1x</title>
+  <rect id="ToDelete" fill="#ff13dc" opacity="0" width="24" height="24" /><path class="fill" d="M23.483,8.817,15.35,8.434,12.523.874a.5.5,0,0,0-.934-.006L8.647,8.434l-8.131.39a.5.5,0,0,0-.289.889l6.349,5.095L4.423,22.672a.5.5,0,0,0,.757.55L12,18.748l6.793,4.432a.5.5,0,0,0,.756-.55l-2.126-7.822,6.352-5.1A.5.5,0,0,0,23.483,8.817ZM7.246,19.588l1.5-5.484L4.309,10.548l5.679-.269L12,4.961l2.011,5.318,5.679.269L15.252,14.1l1.5,5.484L12,16.467Z" />
+  </svg>

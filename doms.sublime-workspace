@@ -1,0 +1,630 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"back",
+				"background-image\tproperty"
+			],
+			[
+				"add",
+				"addClass"
+			],
+			[
+				"rem",
+				"removeClass"
+			],
+			[
+				"act",
+				"active_status"
+			],
+			[
+				"std",
+				"stderr"
+			],
+			[
+				"expire",
+				"expired_class"
+			],
+			[
+				"doma",
+				"domain_to_add"
+			],
+			[
+				"te",
+				"text-align\tproperty"
+			],
+			[
+				"r",
+				"rgba()\tbackground-color"
+			],
+			[
+				"font",
+				"font-weight\tproperty"
+			],
+			[
+				"li",
+				"line-height\tproperty"
+			],
+			[
+				"TE",
+				"text-decoration\tproperty"
+			],
+			[
+				"bac",
+				"background-color\tproperty"
+			],
+			[
+				"inl",
+				"inline-block\tdisplay"
+			],
+			[
+				"expires",
+				"expires_cell"
+			],
+			[
+				"valu",
+				"valueOf"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"max-",
+				"max-height"
+			],
+			[
+				"mini",
+				"minimize_dragged"
+			],
+			[
+				"tar",
+				"targetbottom"
+			],
+			[
+				"target_",
+				"target_bottom_neighbour"
+			],
+			[
+				"target",
+				"target_top_neighbour"
+			],
+			[
+				"targe",
+				"target_top_neighbour"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "server.js",
+			"settings":
+			{
+				"buffer_size": 550,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/index.html",
+			"settings":
+			{
+				"buffer_size": 2893,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "public/dom.less",
+			"settings":
+			{
+				"buffer_size": 2318,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Acest grup este un grup PRIVAT, destinat EXCLUSIV locatarilor/viitorilor locatari din complexul rezidential Baba Novac Residence.\n\nPentru ca cererea dumneavoastra de inscriere sa fie aprobata, trebuie sa raspundeti OBLIGATORIU la urmatoarea intrebare:\n\nCare este numarul apartamentului in care locuiti (sau pentru care aveti promisiunea de vanzare/cumparare semnata)?\n\n(Numarul apartamentului il gasiti in contractul semnat, la sectiunea definitii/apartament)\n\n\n\nAți rezervat/achiziționat un apartament în complexul Baba Novac Residence? Dacă da, în ce bloc și la ce etaj?",
+			"settings":
+			{
+				"buffer_size": 572,
+				"line_ending": "Unix",
+				"name": "Acest grup este un grup PRIVAT, destinat EXCLUSIV"
+			}
+		},
+		{
+			"contents": "\nSubject:\n--------------------\nNew Activity in <%Project Name%>\n\n\n\nContent\n---------------------------\nHi <%Receiver Name%>\n\nHere's the latest activity on <%Project Name%>\n\nYou have been assigned to <%counter%> tasks\n<iterate tasks>\n\t<link><%taskname%></link><br/>\n</iterate tasks>\n\nRecent changes\n<iterate followed tasks/assets that have updates or comments>\n\t<link><%Task/asset Name%></link>\n\t<%c1%>New Updates (for tasks)\n\t<%c2%> New Comments\n</iterate followed tasks that have updates or comments>\n\n\nHave a nice day,\nYour friends from Adobe\n\n\n",
+			"settings":
+			{
+				"buffer_size": 547,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "var app = {\n\tconfig:{\n\t\tdb_path:\"doms.json\"\n\t},\n\tinit:function(){\n\t\tapp.bindStuff();\n\t\tapp.loadDB();\n\t},\n\tloadDB:function(){\n\t\tvar database = firebase.database();\n\t\tapp[\"domRef\"] = database.ref('domains').orderByChild(\"expires\");\n\t\tapp.displayDoms()\n\t\t\n\t},\n\tbindStuff:function(){\n\t\t$(document).on(\"click\",\"a.check\",function(event){\n\t\t\tevent.preventDefault();\n\t\t\tvar element = $(event.target)\n\t\t\tapp.whois(element.data(\"domain\"),element.data(\"key\"));\n\t\t});\n\t\t$(document).on(\"click\",\"a.fab\",function(event){\n\t\t\tapp.openProbeModal();\n\t\t})\n\t\t$(document).on(\"click\",\"#probeCancel\",function(event){\n\t\t\tapp.closeProbeModal();\n\t\t})\n\t\t$(document).on(\"click\",\"#probeNext\",function(event){\n\t\t\tapp.probeNext();\n\t\t})\n\t\t$(document).on(\"keyup\",\"#domainname\",function(event){\n\t\t\t$(\"#modal_overlay .message\").removeClass(\"error\").html(\"\");\n\t\t\tif($(this).val()!=\"\"){\n\t\t\t\t$(\"#probeNext\").removeAttr(\"disabled\");\n\t\t\t\tif(event.keyCode == 13){\n\t\t\t\t\tapp.probeNext();\n\t\t\t\t}//enter\n\t\t\t}else{\n\t\t\t\t$(\"#probeNext\").attr(\"disabled\",\"disabled\");\n\t\t\t}\n\n\t\t})\n\t\t$(document).on(\"keyup\",\"body\",function(event){\n\t\t\tif(event.keyCode == 27){\n\t\t\t\t\tapp.closeProbeModal();\n\t\t\t\t}//escape\n\t\t})\n\t\t$(document).on(\"change\",\"select.rating\",function(){\n\t\t\talert(\"aici\")\n\t\t});\n\t\t$(document).on(\"mouseenter\",\".star i\",function(event){\n\t\t\t$(this).addClass(\"currenthover\");\n\t\t\t$(this).closest(\".star\").find(\"i\").each(function(k,v){\n\t\t\t\t$(v).addClass(\"tmpactive\");\n\t\t\t\tif($(v).hasClass(\"currenthover\")){\n\t\t\t\t\t\n\t\t\t\t}\n\t\t\t});\n\t\t})\n\t\t$(document).on(\"mouseout\",\".star i\",function(event){\n\t\t\t$(this).removeClass(\"tmpactive currenthover\");\n\t\t\t$(this).closest(\".star\").find(\"i\").each(function(k,v){\n\t\t\t\t$(v).removeClass(\"tmpactive\");\n\t\t\t\t\n\t\t\t});\n\t\t})\n\t},\n\tprobeNext:function(){\n\t\tvar domain = $(\"#domainname\").val();\n\n\t\tif(!app[\"domain_to_add\"]){\n\t\t\tif($('[data-domain=\"'+domain+'\"]').length == 0){\n\t\t\t\t$(\"#modal_overlay .message\").removeClass(\"error\").html(\"\");\n\t\t\t\t$(\"#modal_overlay .content\").html(\"...checking\");\n\t\t\t\t$.ajax(\"/whois\",{\n\t\t\t\t\tdata:{\n\t\t\t\t\t\tdomain:domain\n\t\t\t\t\t},\n\t\t\t\t\tsuccess:function(data){\n\t\t\t\t\t\tapp[\"domain_to_add\"] = {\n\t\t\t\t\t\t\t\"name\":domain,\n\t\t\t\t\t\t\t\"expires\":data,\n\t\t\t\t\t\t\t\"lastchecked\":new Date().valueOf()\n\t\t\t\t\t\t}\n\t\t\t\t\t\tvar now = new Date().valueOf();\n\t\t\t\t\t\tvar expires = moment(data).valueOf();\n\t\t\t\t\t\tvar expired_class = \"\"\n\t\t\t\t\t\tif(expires<now){\n\t\t\t\t\t\t\texpired_class = \"expired\"\n\t\t\t\t\t\t}\n\t\t\t\t\t\t$(\"#modal_overlay .content\").html('<strong>'+domain+'</strong> will expire on<br/><h1 class=\"'+expired_class+'\">'+moment(data).fromNow()+'</h1><br/>('+moment(data).format('MM-DD-YYYY')+')');\n\t\t\t\t\t\t$(\"#probeNext\").html(\"Add to list\");\n\t\t\t\t\t},\n\t\t\t\t\terror:function(data){\n\t\t\t\t\t\t$(\"#modal_overlay .content\").html('<input type=\"text\" id=\"domainname\" placeholder=\"Domain Name\"/>');\n\t\t\t\t\t\t$(\"#modal_overlay .message\").addClass(\"error\").html(\"wrong domain\");\n\t\t\t\t\t\t$(\"#domainname\").focus();\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t}else{\n\t\t\t\t$(\"#modal_overlay .message\").addClass(\"error\").html(\"This domain is already in the list.\");\n\t\t\t\t$(\"#domainname\").focus();\n\t\t\t}\n\t\t}else{\n\t\t\tapp.addDomain(app[\"domain_to_add\"]);\n\t\t}\n\t\t\n\t},\n\taddDomain:function(data){\n\t\tdata.expires = moment(data.expires).valueOf()\n\t\tvar ref = firebase.database().ref('domains');\n\t\tref.push(data,function(error){\n\t\t\tif (error)\n\t\t\t    alert('Error has occured during saving process')\n\t\t\t else{\n\t\t\t \t//kill the modal\n\t\t\t \t$(\"#modal_overlay\").remove();\n\t\t\t \t//add domain entry\n\t\t\t \twindow.location.reload();//:)\n\t\t\t }\n\t\t\t    \n\t\t});   // Creates a new ref with a new \"push key\"\n\t},\n\topenProbeModal:function(){\n\t\t$(\"#modal_overlay\").remove();\n\t\tvar template = _.template($('#probe_modal_template').html());\n\t\t$(\"body\").append(template());\n\t\t$(\"#domainname\").focus();\n\t},\n\tcloseProbeModal:function(){\n\t\tapp[\"domain_to_add\"] = null;\n\t\t$(\"#modal_overlay\").remove();\n\t},\n\twhois:function(domain,id){\n\n\t\t$.ajax(\"/whois\",{\n\t\t\tdata:{\n\t\t\t\t\"domain\":domain\n\t\t\t},\n\t\t\tsuccess:function(data){\n\t\t\t\tapp.updateDomainRow(domain,id,data);\n\t\t\t}\n\t\t})\n\t\t// console.log(domain,id)\n\t},\n\tupdateDomainRow:function(domain,id,expires){\n\t\t//update UI\n\t\t\n\t\tvar now = new Date().valueOf()\n\t\tvar expires = moment(expires).valueOf()\n\n\t\tvar expires_cell = $(\"div[data-key='\"+id+\"'] .expires\");\n\t\texpires_cell.html(moment(expires).format('MM-DD-YYYY'));\n\t\tif(expires<now){\n\t\t\texpires_cell.addClass(\"expired\");\n\t\t}else{\n\t\t\texpires_cell.removeClass(\"expired\");\n\t\t}\n\t\t$(\"div[data-key='\"+id+\"'] .lastchecked\").html(moment(now).fromNow());\n\n\n\n\t\tfirebase.database().ref('domains').orderByChild('name').equalTo(domain).on(\"value\", function(snapshot) {\n\t\t    snapshot.forEach(function(data) {\n\t\t\t\tfirebase.database().ref('domains/' + data.key).update({\n\t\t\t\t    expires: expires,\n\t\t\t\t    lastchecked:now\n\t\t\t\t });\n\t\t    });\n\t\t});\n\t\t\n\t\t\n\t},\n\tdisplayDoms:function(){\n\t\tvar ret = {\"domains\":[]};\n\t\tapp.domRef.once(\"value\").then(function(snapshot) {\n\t\t\tsnapshot.forEach(function(childSnapshot) {\n\t\t\t\tvar key = childSnapshot.key;\n\t\t\t\t// console.log(key)\n\t\t\t  // console.log(childSnapshot.val());\n\t\t\t \n\t\t\t  \n\t\t\t  \tret.domains.push(childSnapshot.val())\n\t\t\t   \n\t\t\t});\n\t\t\t// ret.domains = ret.domains.reverse();\n\t\t\t// console.log(ret);\n\t\t\tvar template = _.template(\n\t\t \t $('#domain_list_template').html()\n\t\t\t);\n\t\t\t _.templateSettings.variable = 'domains';\n\t\t\t$(\"#appcontainer\").html(template(ret))\n\t\t});\n\t}\n\n\t\n\n}\n$(document).ready(function(){\n\tapp.init();\n});",
+			"file": "public/dom.js",
+			"file_size": 5309,
+			"file_write_time": 131774315542194447,
+			"settings":
+			{
+				"buffer_size": 5296,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/LESS-build/LESS.sublime-build",
+					""
+				],
+				[
+					"Packages/LESS-build/LESS.sublime-build",
+					"Minify"
+				]
+			],
+			[
+				"Packages/LESS-build/LESS.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 373.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"package control",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Advanced Install Package"
+			],
+			[
+				"package",
+				"Package Control: List Packages"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"packa",
+				"Package Control: Remove Package"
+			]
+		],
+		"width": 412.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/gestan/playground/doms",
+		"/Users/gestan/playground/doms/public"
+	],
+	"file_history":
+	[
+		"/Users/gestan/playground/doms/dom.less",
+		"/Users/gestan/playground/doms/server.js",
+		"/Users/gestan/playground/doms/package-lock.json",
+		"/Users/gestan/playground/doms/doms.json",
+		"/Users/gestan/playground/doms/index.html",
+		"/Users/gestan/playground/doms/dom.js",
+		"/Users/gestan/playground/doms/package.json",
+		"/Users/gestan/playground/doms/dom.css",
+		"/Users/gestan/prototypes/golden-ticket/src/views/project/assets/details/AssetDetails.less",
+		"/Users/gestan/prototypes/golden-ticket/src/views/styles/common.less",
+		"/Users/gestan/prototypes/golden-ticket/node_modules/spectrum-less/less/spectrum.less",
+		"/Users/gestan/prototypes/golden-ticket/node_modules/spectrum-less/less/themes.less",
+		"/Users/gestan/prototypes/golden-ticket/node_modules/less/test/less-bom/colors.less",
+		"/Users/gestan/prototypes/golden-ticket/node_modules/spectrum-less/less/colors-light.less",
+		"/Users/gestan/Desktop/archivare tasklists",
+		"/Users/gestan/prototypes/golden-ticket/src/views/project/assets/details/AssetCanvas.less",
+		"/Users/gestan/prototypes/golden-ticket/src/views/components/TopBar.less",
+		"/Users/gestan/prototypes/golden-ticket/src/views/project/SideBar.less",
+		"/Users/gestan/playground/scroll suggestions/index.html",
+		"/Users/gestan/playground/scroll suggestions/test.less",
+		"/Users/gestan/playground/scroll suggestions/test.js",
+		"/Users/gestan/Desktop/seinfeld.txt",
+		"/Users/gestan/Desktop/Seinfeld/wget.sh",
+		"/Users/gestan/playground/drag.drop/styles/style.less",
+		"/Users/gestan/playground/drag.drop/scripts/script.js",
+		"/Users/gestan/playground/drag.drop/index.html",
+		"/Users/gestan/playground/drag.drop/styles/style.css",
+		"/Users/gestan/Library/Application Support/Sublime Text 3/Packages/User/less2css.sublime-settings",
+		"/Users/gestan/Library/Application Support/Sublime Text 3/Packages/Less2Css/less2css.sublime-settings",
+		"/Users/gestan/Library/Application Support/Sublime Text 3/Packages/Less2Css/Default (OSX).sublime-keymap",
+		"/Users/gestan/Library/Application Support/Sublime Text 3/Installed Packages/Less2Css.sublime-package",
+		"/Users/gestan/playground/drag.drop/styles/style.less.js",
+		"/Users/gestan/playground/drag.drop/style.js/style.js",
+		"/Users/gestan/Dropbox (Adobe Design)/Apps/Heroku/adoberush/index.html",
+		"/Users/gestan/campus.newsletter/indexQ1.1.html",
+		"/Users/gestan/campus.newsletter/indexQ1.html"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"star",
+			"update",
+			"whois",
+			"probe",
+			"mmm",
+			"console.",
+			".check",
+			"console",
+			"rightcolumn",
+			"imagescroller",
+			"versionsPopoverContent",
+			"grey",
+			"gr"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 550,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								454,
+								454
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2893,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1586,
+								1586
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 497.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "public/dom.less",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2318,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1669,
+								1669
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1365.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 572,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								572,
+								572
+							]
+						],
+						"settings":
+						{
+							"auto_name": "Acest grup este un grup PRIVAT, destinat EXCLUSIV",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 547,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								282,
+								282
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "public/dom.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5296,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3878,
+								3884
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1762.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 102.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/LESS-build/LESS.sublime-build",
+	"project": "doms.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"colors",
+				"node_modules/less/test/less-bom/colors.less"
+			],
+			[
+				"colors-l",
+				"node_modules/spectrum-less/less/colors-light.less"
+			],
+			[
+				"themes",
+				"node_modules/spectrum-less/less/themes.less"
+			],
+			[
+				"spectrum.le",
+				"node_modules/spectrum-less/less/spectrum.less"
+			],
+			[
+				"common.less",
+				"src/views/styles/common.less"
+			],
+			[
+				"assetdetails.",
+				"src/views/project/assets/details/AssetDetails.less"
+			],
+			[
+				"color.le",
+				"node_modules/less/test/less-bom/colors.less"
+			],
+			[
+				"color-li",
+				"node_modules/spectrum-less/less/colors-light.less"
+			],
+			[
+				"theme",
+				"node_modules/spectrum-less/less/themes.less"
+			],
+			[
+				"spectru",
+				"node_modules/spectrum-less/less/spectrum.less"
+			],
+			[
+				"common.les",
+				"src/views/styles/common.less"
+			],
+			[
+				"topba",
+				"src/views/components/TopBar.less"
+			],
+			[
+				"sidebar",
+				"src/views/project/SideBar.less"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 270.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
