@@ -152,7 +152,7 @@ var app = {
 					}
 				});
 			}else{
-				$("#modal_overlay .message").addClass("error").html("This domain is already in the list.");
+				$("#modal_overlay .message").addClass("error").html("This domain is already in the list (Expires: "+$('[data-domain="'+domain+'"] .expires').html()+")");
 				$("#domainname").focus();
 			}
 		}else{
