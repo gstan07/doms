@@ -93,7 +93,7 @@ var app = {
 			var domain = $(this).closest("[data-domain]").attr("data-domain");
 			var rating = $(this).val();
 			app.updateDomain(domain,{
-				"rating":rating
+				"rating":parseFloat(rating)
 			});
 		});
 		$(document).on("mouseenter",".star i",function(event){
@@ -268,19 +268,30 @@ var app = {
 	displayDoms:function(settings){
 		if(!settings){var settings = {}}
 		if(!settings["orderBy"]){
-			settings["orderBy"] = "expires";
+			settings["orderBy"] = ["expires","rating"];
 		}
 		if(!settings["direction"]){
-			settings["direction"] = "desc"
+			settings["direction"] = "asc"
 		}
 		var data = app.domains;
 
 		data.domains = data.domains.sort(function(a,b){
-			if(settings.direction == "asc"){
-				return b[settings.orderBy]-a[settings.orderBy]	
+			var crit = [parseFloat(a[settings.orderBy[0]]),parseFloat(b[settings.orderBy[0]])]
+
+		
+			if(crit[0]>crit[1]){
+				return 1;
+			}else if(crit[0]<crit[1]){
+				return -1;
 			}else{
-				return a[settings.orderBy]-b[settings.orderBy]
+				var crit2 = [parseFloat(a[settings.orderBy[1]]),parseFloat(b[settings.orderBy[1]])];
+				if(crit2[0]>crit2[1]){
+					return -1
+				}else{
+					return 1
+				}
 			}
+	
 			
 		})
 		
@@ -322,6 +333,7 @@ var app = {
 
 
 				app.updateDomain(domname,{
+					"rating":5,
 					"expires":expiration_date,
 					"lastchecked":new Date().valueOf()
 				},function(){
