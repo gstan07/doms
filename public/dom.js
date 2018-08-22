@@ -255,7 +255,11 @@ var app = {
 		var template = _.template(
 		 	 $('#row_template').html()
 		);
-		return template(domain);
+		 var ret = template(domain);
+		 // if($("[data-expires='"+domain.expires+"']").length == 0){
+		 // 	ret = '<div class="spacer" data-expires="'+domain.expires+'">aaa</div>' + ret;
+		 // }
+		return ret;
 	},
 	updateDomainRow:function(domain){
 		
@@ -301,7 +305,14 @@ var app = {
 		 	 $('#domain_list_template').html()
 		);
 		
-		$("#appcontainer").html(template(data))
+		$("#appcontainer").html(template(data));
+		$('.domain[data-expires]').each(function(k,row){
+			expires = $(row).data("expires");
+			var extra_row = $('<div class="spacer" data-expires="'+expires+'">Disponibil din: '+moment(expires).add(90, 'days').format('MMMM Do YYYY')+' ('+$(".domain[data-expires='"+expires+"']").length+')</div>');
+			if($(".spacer[data-expires='"+expires+"']").length==0){
+				extra_row.insertBefore($(".domain[data-expires='"+expires+"']").first())
+			}	
+		});
 
 
 
@@ -333,7 +344,6 @@ var app = {
 
 
 				app.updateDomain(domname,{
-					"rating":5,
 					"expires":expiration_date,
 					"lastchecked":new Date().valueOf()
 				},function(){

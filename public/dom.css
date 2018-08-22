@@ -7,6 +7,14 @@ body {
 .expired {
   color: red;
 }
+div.spacer {
+  clear: both;
+  height: 100px;
+  text-align: center;
+  line-height: 100px;
+  padding-left: 20px;
+  font-size: 18px;
+}
 .myfab {
   width: 64px;
   height: 64px;
