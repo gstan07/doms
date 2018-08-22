@@ -3,6 +3,7 @@ var whois = require('whois')
 var exec = require('child_process').exec;
 const app = express()
 
+var port = process.env.PORT || 8080
 
 app.use(express.static('public'))
 
@@ -19,4 +20,4 @@ app.get('/whois', function(req, res,next) {
   })
 });
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+app.listen(port, () => console.log('Example app listening on port 3000!'))
