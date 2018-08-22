@@ -9,10 +9,10 @@ body{
 .expired{
 	color:red;
 }
-.fab{
+.myfab{
 	width:64px;
 	height:64px;
-	font-size:28px;
+	font-size:40px!important;
 	font-weight: bold;
 	color:#fff;
 	background-color:@blue;
@@ -23,8 +23,17 @@ body{
 	border-radius: 50%;
 	text-decoration: none;
 	text-align: center;
-	line-height: 64px;
-	box-shadow: @shadow
+	line-height: 64px!important;
+	box-shadow: @shadow;
+	i{
+			line-height: 64px;
+		}
+	&.fab2{
+		bottom:100px;
+		background-color: #6200ee;
+		font-size:28px!important;
+
+	}
 }
 input[type="text"]{
 	width:100%;
@@ -156,4 +165,58 @@ select.rating{
 		}
 
 	}
+
 }
+.checkprogress{
+		z-index:100;
+		bottom:100px;
+		right:24px;
+		background-color:#fff;
+		width:300px;
+		padding:10px;
+		position: fixed;
+		font-size:12px;
+		
+		box-shadow: @shadow;
+		div{
+			padding:10px 0;
+			line-height: 32px;
+		}
+		#checkeddomain{
+			display:inline-block;
+			width:100px;
+		}
+		.changed {
+			text-align: center;
+			border-bottom:1px solid #ccc;
+			padding-top:0;
+			i{
+			color:#ccc;
+			}
+			.item{
+				color:#707070;
+				padding: 0!important;
+				overflow: auto;
+				line-height: 14px!important;
+				
+				.domain{
+					line-height: 14px!important;
+					float: left;
+					text-align: left;
+					width:45%;
+					strong{
+						color:#000;
+					}
+				}
+				.expires{
+					line-height: 14px!important;
+					width:50%;
+					float: right;
+					text-align: right;
+				}
+			}
+		}
+		button{
+			float:right;
+		}
+	}

@@ -7,10 +7,10 @@ body {
 .expired {
   color: red;
 }
-.fab {
+.myfab {
   width: 64px;
   height: 64px;
-  font-size: 28px;
+  font-size: 40px!important;
   font-weight: bold;
   color: #fff;
   background-color: #1473e6;
@@ -21,8 +21,16 @@ body {
   border-radius: 50%;
   text-decoration: none;
   text-align: center;
-  line-height: 64px;
+  line-height: 64px!important;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+}
+.myfab i {
+  line-height: 64px;
+}
+.myfab.fab2 {
+  bottom: 100px;
+  background-color: #6200ee;
+  font-size: 28px!important;
 }
 input[type="text"] {
   width: 100%;
@@ -143,4 +151,55 @@ select.rating {
 .domain_list_template .domain > div.lastchecked {
   color: #707070;
   /*font-size: 12px;*/
+}
+.checkprogress {
+  z-index: 100;
+  bottom: 100px;
+  right: 24px;
+  background-color: #fff;
+  width: 300px;
+  padding: 10px;
+  position: fixed;
+  font-size: 12px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.14), 0 4px 8px rgba(0, 0, 0, 0.28);
+}
+.checkprogress div {
+  padding: 10px 0;
+  line-height: 32px;
+}
+.checkprogress #checkeddomain {
+  display: inline-block;
+  width: 100px;
+}
+.checkprogress .changed {
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  padding-top: 0;
+}
+.checkprogress .changed i {
+  color: #ccc;
+}
+.checkprogress .changed .item {
+  color: #707070;
+  padding: 0!important;
+  overflow: auto;
+  line-height: 14px!important;
+}
+.checkprogress .changed .item .domain {
+  line-height: 14px!important;
+  float: left;
+  text-align: left;
+  width: 45%;
+}
+.checkprogress .changed .item .domain strong {
+  color: #000;
+}
+.checkprogress .changed .item .expires {
+  line-height: 14px!important;
+  width: 50%;
+  float: right;
+  text-align: right;
+}
+.checkprogress button {
+  float: right;
 }

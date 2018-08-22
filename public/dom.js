@@ -4,7 +4,9 @@ var app = {
 	},
 	init:function(){
 		app.bindStuff();
-		app.loadDB(app.displayDoms);
+		app.loadDB(function(){
+			app.displayDoms();	
+		});
 	},
 	loadDB:function(callback){
 		var database = firebase.database();
@@ -29,11 +31,23 @@ var app = {
 		
 	},
 	bindStuff:function(){
+		$(document).on("click","#stopchecking",function(event){
+			$("#modal_overlay").remove();
+			app["stopchecking"] = true;
+			app.displayDoms();
+		});
 		$(document).on("click","a.check",function(event){
 			event.preventDefault();
-			var element = $(event.target)
-			app.whois(element.data("domain"),element.data("key"),function(){
-				app.updateDomainRow(element.data("domain"));
+			var domname = $(event.target).data("domain");
+
+			app.whois(domname,function(whoisdata){
+				var expiration_date = app.getExpirationFromWhois(whoisdata);	
+				app.updateDomain(domname,{
+					"expires":expiration_date,
+					"lastchecked":new Date().valueOf()
+				},function(){
+					app.updateDomainRow(domname)	
+				})
 			});
 		});
 		$(document).on("click","a.remove",function(event){
@@ -46,8 +60,11 @@ var app = {
 				});
 			}
 		});
-		$(document).on("click","a.fab",function(event){
+		$(document).on("click","#fab1",function(event){
 			app.openProbeModal();
+		})
+		$(document).on("click","#fab2",function(event){
+			app.updateAllDomains();
 		})
 		$(document).on("click","#probeCancel",function(event){
 			app.closeProbeModal();
@@ -96,6 +113,11 @@ var app = {
 			});
 		})
 	},
+	getExpirationFromWhois(whoisdata){
+		const expiration_regexp = /Expires On:\s(\w+.*)/gm;
+		var expiration_date = expiration_regexp.exec(whoisdata)[1];
+		return moment(expiration_date).valueOf()
+	},
 	removeDomain:function(domain,callback){
 		firebase.database().ref('domains')
 		.orderByChild('name')
@@ -126,31 +148,25 @@ var app = {
 			if($('[data-domain="'+domain+'"]').length == 0){
 				$("#modal_overlay .message").removeClass("error").html("");
 				$("#modal_overlay .content").html("...checking");
-				$.ajax("/whois",{
-					data:{
-						domain:domain
-					},
-					success:function(data){
-						app["domain_to_add"] = {
+				app.whois(domain,function(whoisdata){
+					const expiration_regexp = /Expires On:\s(\w+.*)/gm;
+					expiration_date = expiration_regexp.exec(whoisdata)[1];
+					app["domain_to_add"] = {
 							"name":domain,
-							"expires":data,
+							"expires":expiration_date,
 							"lastchecked":new Date().valueOf()
-						}
-						var now = new Date().valueOf();
-						var expires = moment(data).valueOf();
-						var expired_class = ""
-						if(expires<now){
-							expired_class = "expired"
-						}
-						$("#modal_overlay .content").html('<strong>'+domain+'</strong> will expire on<br/><h1 class="'+expired_class+'">'+moment(data).fromNow()+'</h1><br/>('+moment(data).format('MM-DD-YYYY')+')');
-						$("#probeNext").html("Add to list");
-					},
-					error:function(data){
-						$("#modal_overlay .content").html('<input type="text" id="domainname" placeholder="Domain Name"/>');
-						$("#modal_overlay .message").addClass("error").html("wrong domain");
-						$("#domainname").focus();
 					}
-				});
+					var now = new Date().valueOf();
+					var expires = moment(expiration_date).valueOf();
+					var expired_class = ""
+					if(expires<now){
+						expired_class = "expired"
+					}
+					$("#modal_overlay .content").html('<strong>'+domain+'</strong> will expire on<br/><h1 class="'+expired_class+'">'+moment(expiration_date).fromNow()+'</h1><br/>('+moment(expiration_date).format('MM-DD-YYYY')+')');
+					$("#probeNext").html("Add to list");
+
+				})
+				
 			}else{
 				$("#modal_overlay .message").addClass("error").html("This domain is already in the list (Expires: "+$('[data-domain="'+domain+'"] .expires').html()+")");
 				$("#domainname").focus();
@@ -185,28 +201,30 @@ var app = {
 		app["domain_to_add"] = null;
 		$("#modal_overlay").remove();
 	},
-	whois:function(domain,id,callback){
+	whois:function(domain,callback){
 		$.ajax("/whois",{
 			data:{
 				"domain":domain
 			},
 			success:function(data){
-				var now = new Date().valueOf()
-				var expires = moment(expires).valueOf()
-				app.updateDomain(domain,{
-					"expires":moment(data).valueOf(),
-					"lastchecked":now
-				},function(){
-					if(callback){
-						callback();
-					}
-				});
+				if(callback){
+					callback(data);
+				}
+				// var now = new Date().valueOf()
+				// var expires = moment(expires).valueOf()
+				// app.updateDomain(domain,{
+				// 	"expires":moment(data).valueOf(),
+				// 	"lastchecked":now
+				// },function(){
+				// 	if(callback){
+				// 		callback();
+				// 	}
+				// });
 			}
 		})
 		// console.log(domain,id)
 	},
 	updateDomain(domname,obj,callback){
-		// console.log(domname,obj);
 		firebase.database().ref('domains')
 		.orderByChild('name')
 		.equalTo(domname)
@@ -216,14 +234,17 @@ var app = {
 
 				firebase.database().ref('domains/' + data.key).update(obj).then(function(newobj){
 					// update local model
+
 					$(app.domains.domains).each(function(k,v){
 						if(v.name == domname){
 							app.domains.domains[k] = $.extend( v, obj);
+
+							if(callback){
+								callback(data);
+							}
 						}
 					});
-					if(callback){
-						callback(data);
-					}
+					
 				}).catch(function(error){
 					 console.log("Data could not be saved.",error);
 				});
@@ -237,6 +258,7 @@ var app = {
 		return template(domain);
 	},
 	updateDomainRow:function(domain){
+		
 		$(app.domains.domains).each(function(k,v){
 			if(v.name == domain){
 				$("div[data-domain='"+domain+"']").replaceWith(app.createRow(v));
@@ -262,14 +284,7 @@ var app = {
 			
 		})
 		
-		// switch(orderBy){
-		// 	case "rating":
-		// 	data.domains = data.domains.sort(function(a,b){return b["rating"]-a["rating"]})
-		// 	break;
-		// 	default:
-		// 	data.domains = data.domains.sort(function(a,b){return a["expires"]-b["expires"]})
-		// 	break;
-		// }
+		
 		
 		var template = _.template(
 		 	 $('#domain_list_template').html()
@@ -279,6 +294,53 @@ var app = {
 
 
 
+		
+	},
+	updateAllDomains:function(current_domain_key){
+		
+		if(!app.stopchecking){
+			var template = _.template($('#checkprogress').html());
+			$("#appcontainer").append(template());
+
+			if(!current_domain_key){
+				var current_domain_key = 0;
+			}
+			var domname = app.domains.domains[current_domain_key]["name"];
+
+			app.whois(domname,function(whoisdata){
+				expiration_date = app.getExpirationFromWhois(whoisdata);
+
+				if(expiration_date != app.domains.domains[current_domain_key]["expires"]){
+						//expiration date changed
+						var changed_row = $('<div class="item">\
+						<div class="domain"><strong>'+domname+'</strong> changed</div>\
+						<div class="expires">expires: '+moment(expiration_date).format('MM-DD-YYYY')+'</div>\
+					</div>');
+						$("#checkprogress .changed i").remove();
+						$("#checkprogress .changed").append(changed_row);
+				}
+
+
+				app.updateDomain(domname,{
+					"expires":expiration_date,
+					"lastchecked":new Date().valueOf()
+				},function(){
+					//app.updateDomainRow(domname);
+					$("#checkeddomain").html(domname);
+					$("#checkstep").html(current_domain_key+"/"+ (app.domains.domains.length-1))
+
+					if(app.domains.domains[current_domain_key+1]){
+						app.updateAllDomains(current_domain_key+1);
+					}else{
+						$("#stats").html("All checked");
+						$("#stopchecking").text("Done");
+					}
+				})
+			});
+		}else{
+			app.stopchecking = false;
+		}
+		
 		
 	}
 
