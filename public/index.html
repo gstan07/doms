@@ -66,10 +66,24 @@
 				 	</div>
 				 	<div class="name"><%=name%></div>
 				 	<div class="expires <%if(moment(expires).valueOf()<new Date().valueOf()){%>expired<%}%>">
-				 		<%=moment(expires).format('MM-DD-YYYY')%>
+				 		<%if(expires!=0){
+				 			%>
+				 			<%=moment(expires).format('MM-DD-YYYY')%>
+				 			<%
+				 		}%>
+				 		
 				 	</div>
 				 	<div class="available">
-				 		<%=moment(expires).add(90, 'days').format('MM-DD-YYYY')%>
+				 		<%if(expires!=0){
+				 			%>
+				 			<%=moment(expires).add(90, 'days').format('MM-DD-YYYY')%>
+				 			<%
+				 		}else{
+				 			%>
+				 			<span style="color:green;font-weight:bold">disponibil acum</span>
+				 			<%
+				 		}%>
+				 		
 				 	</div>
 				 	
 				 	<div class="lastchecked" data-livestamp="<%=lastchecked/1000%>"></div>

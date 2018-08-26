@@ -41,7 +41,11 @@ var app = {
 			var domname = $(event.target).data("domain");
 
 			app.whois(domname,function(whoisdata){
-				var expiration_date = app.getExpirationFromWhois(whoisdata);	
+				if(whoisdata.indexOf("No entries") != -1){
+					var expiration_date = 0;
+				}else{
+					var expiration_date = app.getExpirationFromWhois(whoisdata);		
+				}
 				app.updateDomain(domname,{
 					"expires":expiration_date,
 					"lastchecked":new Date().valueOf()
@@ -149,20 +153,39 @@ var app = {
 				$("#modal_overlay .message").removeClass("error").html("");
 				$("#modal_overlay .content").html("...checking");
 				app.whois(domain,function(whoisdata){
-					const expiration_regexp = /Expires On:\s(\w+.*)/gm;
-					expiration_date = expiration_regexp.exec(whoisdata)[1];
-					app["domain_to_add"] = {
+					if(whoisdata.indexOf("No entries") != -1){
+						app["domain_to_add"] = {
+							"name":domain,
+							"expires":0,
+							"lastchecked":new Date().valueOf()
+						}
+					}else{
+						const expiration_regexp = /Expires On:\s(\w+.*)/gm;	
+						var expiration_date = expiration_regexp.exec(whoisdata)[1];
+						app["domain_to_add"] = {
 							"name":domain,
 							"expires":expiration_date,
 							"lastchecked":new Date().valueOf()
+						}
 					}
+					
+					
+					
 					var now = new Date().valueOf();
-					var expires = moment(expiration_date).valueOf();
-					var expired_class = ""
-					if(expires<now){
-						expired_class = "expired"
+					if(expiration_date){
+						var expires = moment(expiration_date).valueOf();
+						var expired_class = ""
+						if(expires<now && expiration_date){
+							expired_class = "expired"
+						}	
+						$("#modal_overlay .content").html('<strong>'+domain+'</strong> will expire on<br/><h1 class="'+expired_class+'">'+moment(expires).format('DD-MM-YYYY')+'</h1><br/>'+moment(expires).fromNow());
+					}else{
+						var expires = "available";
+						$("#modal_overlay .content").html('<strong>'+domain+'</strong> is available!');
 					}
-					$("#modal_overlay .content").html('<strong>'+domain+'</strong> will expire on<br/><h1 class="'+expired_class+'">'+moment(expiration_date).fromNow()+'</h1><br/>('+moment(expiration_date).format('MM-DD-YYYY')+')');
+					
+					
+					
 					$("#probeNext").html("Add to list");
 
 				})
@@ -308,7 +331,11 @@ var app = {
 		$("#appcontainer").html(template(data));
 		$('.domain[data-expires]').each(function(k,row){
 			expires = $(row).data("expires");
-			var extra_row = $('<div class="spacer" data-expires="'+expires+'">Disponibil din: '+moment(expires).add(90, 'days').format('MMMM Do YYYY')+' ('+$(".domain[data-expires='"+expires+"']").length+')</div>');
+			if(expires != 0){
+				var extra_row = $('<div class="spacer" data-expires="'+expires+'">Disponibil din: '+moment(expires).add(90, 'days').format('MMMM Do YYYY')+' ('+$(".domain[data-expires='"+expires+"']").length+')</div>');				
+			}else{
+				var extra_row = $('<div class="spacer" data-expires="'+expires+'">Disponibile acum '+' ('+$(".domain[data-expires='"+expires+"']").length+')</div>');
+			}
 			if($(".spacer[data-expires='"+expires+"']").length==0){
 				extra_row.insertBefore($(".domain[data-expires='"+expires+"']").first())
 			}	
@@ -330,7 +357,12 @@ var app = {
 			var domname = app.domains.domains[current_domain_key]["name"];
 
 			app.whois(domname,function(whoisdata){
-				expiration_date = app.getExpirationFromWhois(whoisdata);
+
+				if(whoisdata.indexOf("No entries") != -1){
+					var expiration_date = 0;
+				}else{
+					var expiration_date = app.getExpirationFromWhois(whoisdata);		
+				}
 
 				if(expiration_date != app.domains.domains[current_domain_key]["expires"]){
 						//expiration date changed
