@@ -136,6 +136,9 @@ select.rating {
 .domain_list_template .domain {
   margin-bottom: 1px;
 }
+.domain_list_template .domain.status_bought {
+  background-color: #42f47a!important;
+}
 .domain_list_template .domain:nth-child(even) {
   background-color: #eaeaea;
 }

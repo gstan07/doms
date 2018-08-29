@@ -50,7 +50,7 @@
 			</div>
 	</script>
 	<script type="text/template" id="row_template">
-		<div class="domain" data-domain="<%=name%>" data-expires="<%=expires%>">
+		<div class="domain status_<%if(status){%><%=status%><%}%>" data-domain="<%=name%>" data-expires="<%=expires%>">
 				 	<div class="rating">
 				 		<select class="rating">
 				 			<option value="0">no rating</option>
